@@ -4,14 +4,13 @@ from datetime import datetime
 import urllib
 
 
-### HALLO DAS IST EIN TEST!!!!
 
 ### MEISTERTASK-API
 
 #BASIC STUFF FOR AUTHORIZATION
 
-import meistertask_token
-personal_access_token = meistertask_token.meistertask_token
+
+personal_access_token = "meistertask_token"
 headers = {"Authorization":"Bearer " + personal_access_token + ""}
 
 
@@ -246,8 +245,8 @@ for i in range(0, len(tasks0s)):
 
 ### BOT MESSAGES GENERIEREN (ABHÄNGIG VON PROJEKT)
 
-import telegram_token
-Telegram_Token = telegram_token.telegram_token
+
+Telegram_Token = "telegram_token"
 URL = "https://api.telegram.org/bot{}/".format(Telegram_Token)
 
 # hier geklaut: https://www.codementor.io/garethdwyer/building-a-telegram-bot-using-python-part-1-goi5fncay
