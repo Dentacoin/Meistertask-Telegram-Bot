@@ -35,7 +35,11 @@ person_id_dict = {}
 for i in range(0, len(request_all_persons)):
     person_id_dict[request_all_persons[i]['id']] = str(request_all_persons[i]['firstname'] + " " + request_all_persons[i]['lastname'])
 
-project_id_dict ={}
+project_id_list = []
+for i in range(0, len(request_all_active_projects)):
+    project_id_list.append(request_all_active_projects[i]['id'])
+
+project_id_dict = {}
 for i in range(0, len(request_all_active_projects)):
     project_id_dict[request_all_active_projects[i]['id']] = request_all_active_projects[i]['name']
 
@@ -217,32 +221,37 @@ for i in range(0, len(tasks0s)):
             if key_which_has_changed == 'name':
                 message_name_changed = "The name of the task '" + str(t0["name"]) + "' was changed to '" + task_name_new + "' (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_name_changed)
-
+                bot_message_task_changed_dict[message_name_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 2: Die Notizen (notes) wurden geändert
             if key_which_has_changed == 'notes_html':
                 message_notes_changed = "The notes of the task '" + task_name_new + "' have been changed to '" + str(t1["notes_html"] + "' (section " + section_name_new + " at project " + project_name + ")")
                 bot_message_task_changed.append(message_notes_changed)
+                bot_message_task_changed_dict[message_notes_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 3: Der Status wurde geändert
             if key_which_has_changed == 'status':
                 message_status_changed = "The status of the task '" + task_name_new + "' has been changed to '" + str(status_dict[t1["status"]]) + "' (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_status_changed)
+                bot_message_task_changed_dict[message_status_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 4: Das Fälligkeitsdatum (due) wurde geändert
             if key_which_has_changed == 'due':
                 message_duedate_changed = "The due date of the task '" + task_name_new + "' has been changed to " + due_date_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_duedate_changed)
+                bot_message_task_changed_dict[message_duedate_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 5: Die zuständige Person (assigned_to_id) wurde geändert (Eine Task kann nur einer Person zugeordnet werden)
             if key_which_has_changed == 'assigned_to_id':
                 message_assigned_to_changed = "The task '" + task_name_new + "' is now assigned to " + str(person_id_dict[t1["assigned_to_id"]]) + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_assigned_to_changed)
+                bot_message_task_changed_dict[message_assigned_to_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 6: Die Task wurde in eine andere Section verschoben (section_id hat sich geändert)
             if key_which_has_changed == 'section_id':
                 message_section_changed = "The task '" + task_name_new + "' has been moved to section " + section_name_new + " from " + section_name_old + " at project " + project_name
                 bot_message_task_changed.append(message_section_changed)
+                bot_message_task_changed_dict[message_section_changed] = task_id_project_id_dict[t0["id"]]
 
 
 ### BOT MESSAGES GENERIEREN (ABHÄNGIG VON PROJEKT)
@@ -284,36 +293,63 @@ def send_message(text, chat_id):
 #CHAT-IDs der einzelnen Telegram Gruppen
 dcn_website_id = -312960500
 dcn_wallet_id = -318668419
-dcn_dentacare_id = -1001211449656 #BOT FEHLT
-dcn_trusted_reviews_id = -1001262389080 #BOT FEHLT
-dcn_blogs_ads_pr_id = -1001352094095 #BOT FEHLT
-# dcn_internals_id = #BOT RAUS UND WIEDER REIN
-dcn_database_id = -1001160615253  #BOT FEHLT
-# dcn_dentavox_id = #BOT FEHLT
+dcn_dentacare_id = -1001211449656
+dcn_trusted_reviews_id = -1001262389080
+dcn_blogs_ads_pr_id = -1001352094095
+dcn_internals_id = 1111111
+dcn_database_id = -1001160615253
+dcn_dentavox_id = 2222222
 
 TEST_id = -1001291311714
 
+project_id_list_fix = [2475043, 2475175, 2477482, 2477491, 2522931, 2522949, 2522953, 2522956, 2522987, 2525393, 2540028, 2543566]
 
-# for i in range (0, len(bot_message_new_task)):
-#     print(bot_message_new_task[i])
+project_id_dict_fix = { "2475043": "DentaVox",
+                        "2475175": "Trusted Reviews",
+                        "2477482": "Dentacare",
+                        "2477491": "Content (Blog/Email/Social Articles)",
+                        "2522931": "Dentacoin Website",
+                        "2522949": "Dentacoin Wallet",
+                        "2522953": "Assurance",
+                        "2522956": "PR & Advertising",
+                        "2522987": "Other Tasks",
+                        "2525393": "Events & Initiatives",
+                        "2540028": "Skills Enhancement",
+                        "2543566": "Database"
+                        }
 
-# print("-----")
-#
-# print(bot_message_new_task_dict)
-#
-# print("-----------------------------------")
-#
-# for i in range (0, len(bot_message_task_changed)):
-#     print(bot_message_task_changed[i])
-#
-# print("-----")
-#
-# print(bot_message_task_changed_dict)
+### ZUORDNUNG Bot Message (Projekt ID) - Telegram Gruppe (Chat ID)
+# dict: {project_id: chat_id_telegram}
+
+which_group_text = {"DentaVox": dcn_dentavox_id,
+                    "Trusted Reviews": dcn_trusted_reviews_id,
+                    "Dentacare": dcn_dentacare_id,
+                    "Content (Blog/Email/Social Articles)": dcn_blogs_ads_pr_id,
+                    "Dentacoin Website": dcn_website_id,
+                    "Dentacoin Wallet": dcn_wallet_id,
+                    "Assurance": dcn_internals_id,
+                    "PR & Advertising": dcn_blogs_ads_pr_id,
+                    "Other Tasks": dcn_internals_id,
+                    "Events & Initiatives": dcn_blogs_ads_pr_id,
+                    "Skills Enhancement": dcn_internals_id,
+                    "Database": dcn_database_id
+                    }
+
+#Aus which_group_text wird ein dictionary nur mit Zahlen (project_id: chat_id_telegram)
+
+which_group = {}
+for i in range (0, len(project_id_list_fix)):
+    which_group[project_id_list_fix[i]] = which_group_text[project_id_dict_fix[str(project_id_list_fix[i])]]
 
 
+## Chats werden abgeschickt (NEUE TASK)
+for i in range (0, len(bot_message_new_task)):
+    send_message(bot_message_new_task[i], which_group[bot_message_new_task_dict[bot_message_new_task[i]]])
 
-# print(json.dumps(task_id_project_id_dict, indent=4))
-# print(task_id_project_id_dict)
+## Chats werden abgeschickt (VERÄNDERTE TASK)
+
+for i in range (0, len(bot_message_task_changed)):
+    send_message(bot_message_task_changed[i], which_group[bot_message_task_changed_dict[bot_message_task_changed[i]]])
 
 
 ### Datenbank-Eintrag neuer Messages mit Zeit, Datum ???
