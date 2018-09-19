@@ -3,10 +3,15 @@ import json
 from datetime import datetime
 import urllib
 
+
+### HALLO DAS IST EIN TEST!!!!
+
 ### MEISTERTASK-API
 
 #BASIC STUFF FOR AUTHORIZATION
-personal_access_token = "meistertask_token"
+
+import meistertask_token
+personal_access_token = meistertask_token.meistertask_token
 headers = {"Authorization":"Bearer " + personal_access_token + ""}
 
 
@@ -15,6 +20,7 @@ request_all_persons = json.loads(requests.get("https://www.meistertask.com/api/p
 request_all_active_projects = json.loads(requests.get("https://www.meistertask.com/api/projects?status=active",headers=headers).text)
 request_all_sections = json.loads(requests.get("https://www.meistertask.com/api/sections?",headers=headers).text)
 request_all_tasks = json.loads(requests.get("https://www.meistertask.com/api/tasks?",headers=headers).text)
+
 
 #REQUESTS PRETTIER TO READ
 request_all_persons_pretty = json.dumps(request_all_persons, indent=4)
@@ -240,7 +246,8 @@ for i in range(0, len(tasks0s)):
 
 ### BOT MESSAGES GENERIEREN (ABHÄNGIG VON PROJEKT)
 
-Telegram_Token = telegram_token
+import telegram_token
+Telegram_Token = telegram_token.telegram_token
 URL = "https://api.telegram.org/bot{}/".format(Telegram_Token)
 
 # hier geklaut: https://www.codementor.io/garethdwyer/building-a-telegram-bot-using-python-part-1-goi5fncay
