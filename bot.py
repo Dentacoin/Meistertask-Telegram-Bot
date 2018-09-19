@@ -79,23 +79,23 @@ def formatted_date(Date_and_Time_unformatted):
 
 
 
-#TEMP
-request_all_tasks_0 = [{'id': 29255251, 'token': 'gQnSS2YU', 'name': 'Modify the ban rules', 'notes': '', 'notes_html': 'alte notes html', 'status': 1, 'status_updated_at': '2018-07-02T13:28:31.000000Z', 'section_id': 9018907, 'sequence': 1.0, 'assigned_to_id': 32126941, 'due': '2018-07-06T09:00:00.000000Z', 'created_at': '2018-07-02T13:17:26.748509Z', 'updated_at': '2018-07-02T13:30:49.584830Z'}, {'id': 29260355, 'token': 'm1fAhQHJ', 'name': 'Copy answers from another Q', 'notes': 'Enable following features:\n- Save answers added manually as predefined answers for future use.\n- Copy answers from another question.', 'notes_html': '<p>Enable following features:</p>\n\n<ul>\n<li>Save answers added manually as predefined answers for future use.</li>\n<li>Copy answers from another question.</li>\n</ul>\n', 'status': 8, 'status_updated_at': '2018-07-17T14:03:47.022978Z', 'section_id': 9018907, 'sequence': 2.0, 'assigned_to_id': None, 'due': None, 'created_at': '2018-07-02T14:07:47.035671Z', 'updated_at': '2018-07-17T14:03:47.023263Z'}]
-request_all_tasks_1 = [{'id': 29255251, 'token': 'gQnSS2YU', 'name': 'Modify the ban rules (NEU)', 'notes': 'Neue_Notes ohne html', 'notes_html': '<p>This is html-text</p>', 'status': 2, 'status_updated_at': '2018-07-02T13:28:31.000000Z', 'section_id': 9018907, 'sequence': 1.0, 'assigned_to_id': 32512902, 'due': '2018-07-05T09:00:00.000000Z', 'created_at': '2018-07-02T13:17:26.748509Z', 'updated_at': '2018-07-02T13:30:49.584830Z'}, {'id': 30376008, 'token': '4z0ncrJE', 'name': 'Clarification Meeting with Alex', 'notes': 'Friday, July 27th', 'notes_html': '<p>Friday, July 27th</p>\n', 'status': 2, 'status_updated_at': '2018-08-14T07:09:11.989010Z', 'section_id': 9282074, 'sequence': 0.0, 'assigned_to_id': 32512902, 'due': '2018-07-27T09:00:00.000000Z', 'created_at': '2018-07-24T07:12:55.373106Z', 'updated_at': '2018-08-14T07:09:14.501628Z'}, {'id': 29260355, 'token': 'm1fAhQHJ', 'name': 'Copy answers from another Q', 'notes': 'Enable following features:\n- Save answers added manually as predefined answers for future use.\n- Copy answers from another question.', 'notes_html': '<p>Enable following features:</p>\n\n<ul>\n<li>Save answers added manually as predefined answers for future use.</li>\n<li>Copy answers from another question.</li>\n</ul>\n', 'status': 8, 'status_updated_at': '2018-07-17T14:03:47.022978Z', 'section_id': 9018907, 'sequence': 2.0, 'assigned_to_id': None, 'due': None, 'created_at': '2018-07-02T14:07:47.035671Z', 'updated_at': '2018-07-17T14:03:47.023263Z'}]
+# #TEMP
+# request_all_tasks_0 = [{'id': 29255251, 'token': 'gQnSS2YU', 'name': 'Modify the ban rules', 'notes': '', 'notes_html': 'alte notes html', 'status': 1, 'status_updated_at': '2018-07-02T13:28:31.000000Z', 'section_id': 9018907, 'sequence': 1.0, 'assigned_to_id': 32126941, 'due': '2018-07-06T09:00:00.000000Z', 'created_at': '2018-07-02T13:17:26.748509Z', 'updated_at': '2018-07-02T13:30:49.584830Z'}, {'id': 29260355, 'token': 'm1fAhQHJ', 'name': 'Copy answers from another Q', 'notes': 'Enable following features:\n- Save answers added manually as predefined answers for future use.\n- Copy answers from another question.', 'notes_html': '<p>Enable following features:</p>\n\n<ul>\n<li>Save answers added manually as predefined answers for future use.</li>\n<li>Copy answers from another question.</li>\n</ul>\n', 'status': 8, 'status_updated_at': '2018-07-17T14:03:47.022978Z', 'section_id': 9018907, 'sequence': 2.0, 'assigned_to_id': None, 'due': None, 'created_at': '2018-07-02T14:07:47.035671Z', 'updated_at': '2018-07-17T14:03:47.023263Z'}]
+# request_all_tasks_1 = [{'id': 29255251, 'token': 'gQnSS2YU', 'name': 'Modify the ban rules (NEU)', 'notes': 'Neue_Notes ohne html', 'notes_html': '<p>This is html-text</p>', 'status': 2, 'status_updated_at': '2018-07-02T13:28:31.000000Z', 'section_id': 9018907, 'sequence': 1.0, 'assigned_to_id': 32512902, 'due': '2018-07-05T09:00:00.000000Z', 'created_at': '2018-07-02T13:17:26.748509Z', 'updated_at': '2018-07-02T13:30:49.584830Z'}, {'id': 30376008, 'token': '4z0ncrJE', 'name': 'Clarification Meeting with Alex', 'notes': 'Friday, July 27th', 'notes_html': '<p>Friday, July 27th</p>\n', 'status': 2, 'status_updated_at': '2018-08-14T07:09:11.989010Z', 'section_id': 9282074, 'sequence': 0.0, 'assigned_to_id': 32512902, 'due': '2018-07-27T09:00:00.000000Z', 'created_at': '2018-07-24T07:12:55.373106Z', 'updated_at': '2018-08-14T07:09:14.501628Z'}, {'id': 29260355, 'token': 'm1fAhQHJ', 'name': 'Copy answers from another Q', 'notes': 'Enable following features:\n- Save answers added manually as predefined answers for future use.\n- Copy answers from another question.', 'notes_html': '<p>Enable following features:</p>\n\n<ul>\n<li>Save answers added manually as predefined answers for future use.</li>\n<li>Copy answers from another question.</li>\n</ul>\n', 'status': 8, 'status_updated_at': '2018-07-17T14:03:47.022978Z', 'section_id': 9018907, 'sequence': 2.0, 'assigned_to_id': None, 'due': None, 'created_at': '2018-07-02T14:07:47.035671Z', 'updated_at': '2018-07-17T14:03:47.023263Z'}]
+#
+#
+# tasks0 = request_all_tasks_0
+# tasks1 = request_all_tasks_1
+# #TEMP
 
 
-tasks0 = request_all_tasks_0
-tasks1 = request_all_tasks_1
-#TEMP
 
 
-
-
-# #Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.txt laden
-# with open('temp_snapshot.txt') as json_file:
-#     tasks0 = json.load(json_file)
-# #Zeitpunkt 1 (nachher) -> aktuelle API-Abfrage
-# tasks1 = request_all_tasks
+#Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.txt laden
+with open('temp_snapshot.txt') as json_file:
+    tasks0 = json.load(json_file)
+#Zeitpunkt 1 (nachher) -> aktuelle API-Abfrage
+tasks1 = request_all_tasks
 
 
 ################################## NACHRICHTEN VERSCHICKEN
@@ -296,9 +296,9 @@ dcn_wallet_id = -318668419
 dcn_dentacare_id = -1001211449656
 dcn_trusted_reviews_id = -1001262389080
 dcn_blogs_ads_pr_id = -1001352094095
-dcn_internals_id = 1111111
+dcn_internals_id = -1001244966399
 dcn_database_id = -1001160615253
-dcn_dentavox_id = 2222222
+dcn_dentavox_id = -1001395312696
 
 TEST_id = -1001291311714
 
@@ -357,6 +357,7 @@ for i in range (0, len(bot_message_task_changed)):
 ### tasks1 in json exportieren und alte Daten überschreiben
 
 
+json.dump(tasks1, outfile)
 with open('temp_snapshot.txt', 'w') as outfile:
     json.dump(tasks1, outfile)
 
