@@ -9,9 +9,11 @@ import urllib
 
 #BASIC STUFF FOR AUTHORIZATION
 
+def token(filename):
+    with open(str(filename), "r") as file:
+        return file.read()
 
-personal_access_token = "meistertask_token"
-headers = {"Authorization":"Bearer " + personal_access_token + ""}
+headers = {"Authorization":"Bearer " + token("meistertask_token.txt") + ""}
 
 
 #REQUESTS TO THE ENDPOINTS:
@@ -246,8 +248,7 @@ for i in range(0, len(tasks0s)):
 ### BOT MESSAGES GENERIEREN (ABHÄNGIG VON PROJEKT)
 
 
-Telegram_Token = "telegram_token"
-URL = "https://api.telegram.org/bot{}/".format(Telegram_Token)
+URL = "https://api.telegram.org/bot{}/".format(token("telegram_token.txt"))
 
 # hier geklaut: https://www.codementor.io/garethdwyer/building-a-telegram-bot-using-python-part-1-goi5fncay
 
@@ -293,21 +294,21 @@ dcn_database_id = -1001160615253  #BOT FEHLT
 TEST_id = -1001291311714
 
 
-for i in range (0, len(bot_message_new_task)):
-    print(bot_message_new_task[i])
+# for i in range (0, len(bot_message_new_task)):
+#     print(bot_message_new_task[i])
 
-print("-----")
-
-print(bot_message_new_task_dict)
-
-print("-----------------------------------")
-
-for i in range (0, len(bot_message_task_changed)):
-    print(bot_message_task_changed[i])
-
-print("-----")
-
-print(bot_message_task_changed_dict)
+# print("-----")
+#
+# print(bot_message_new_task_dict)
+#
+# print("-----------------------------------")
+#
+# for i in range (0, len(bot_message_task_changed)):
+#     print(bot_message_task_changed[i])
+#
+# print("-----")
+#
+# print(bot_message_task_changed_dict)
 
 
 
