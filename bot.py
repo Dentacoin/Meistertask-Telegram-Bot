@@ -11,9 +11,10 @@ import urllib
 
 def token(filename):
     with open(str(filename), "r") as file:
-        return file.read()
+        return str(file.readline())
 
-headers = {"Authorization":"Bearer " + token("meistertask_token.txt") + ""}
+
+headers = {"Authorization":"Bearer " + token("meistertask_token.txt")}
 
 
 #REQUESTS TO THE ENDPOINTS:
@@ -70,9 +71,12 @@ for i in range(0, len(request_all_tasks)):
 
 #ZEIT FORMATIERUNG
 def formatted_date(Date_and_Time_unformatted):
-    Date_and_Time = datetime.strptime(Date_and_Time_unformatted, "%Y-%m-%dT%H:%M:%S.%fZ")
-    formatted = str(format(Date_and_Time.day, "02")) + "." + str(format(Date_and_Time.month, "02")) + "." + str(Date_and_Time.year)
-    return formatted
+    if Date_and_Time_unformatted == None:
+        return
+    else:
+        Date_and_Time = datetime.strptime(Date_and_Time_unformatted, "%Y-%m-%dT%H:%M:%S.%fZ")
+        formatted = str(format(Date_and_Time.day, "02")) + "." + str(format(Date_and_Time.month, "02")) + "." + str(Date_and_Time.year)
+        return formatted
 
 ### TELEGRAM-BOT
 
@@ -88,18 +92,16 @@ def formatted_date(Date_and_Time_unformatted):
 # tasks1 = request_all_tasks_1
 # #TEMP
 
-
-
-
 #Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.txt laden
-with open('temp_snapshot.txt') as json_file:
+with open("temp_snapshot.txt", 'r') as json_file:
     tasks0 = json.load(json_file)
+
 #Zeitpunkt 1 (nachher) -> aktuelle API-Abfrage
 tasks1 = request_all_tasks
 
 
 ################################## NACHRICHTEN VERSCHICKEN
-################################## FALL 1: NEUE TASK WIRD ERSTELLT
+################################## FALL 1: NEUE TASK WIRD ERSTELLTlsd
 
 # VORBEREITUNG
 
@@ -113,7 +115,7 @@ bot_message_new_task_dict = {}
 #Falls dazugekommen, neue Tasks (zum Anhängen an tasks0 -> Nur dann können die Daten im nächsten Schritt auf Veränderungen geprüft werden)
 new_tasks_to_append = []
 
-#Link auf die Task (für bot message)
+#Link auf die Task (für bot message):
 def task_link_def(token):
     link = "https://www.meistertask.com/app/task/" + str(token) + "/"
     return link
@@ -178,8 +180,10 @@ if len(tasks0).__eq__(len(tasks1)) == False:
             bot_message_new_task_dict[bot_message_new_task_temp] = task_id_project_id_dict[id_neue_task]
 
 
+
+
 # wenn neue Task dazugekommen ist, füge diese neue Task den alten Daten hinzu. Nach dem Hinzufügen müssen die Daten dann noch sortiert werden, damit die Vergleichsfunktion korrekt funktioniert.
-tasks0 = request_all_tasks_0+new_tasks_to_append
+tasks0 = request_all_tasks+new_tasks_to_append
 
 # Daten nach ID sortieren:
 tasks0s = sorted(tasks0, key=lambda k: k['id'])
@@ -357,7 +361,7 @@ for i in range (0, len(bot_message_task_changed)):
 ### tasks1 in json exportieren und alte Daten überschreiben
 
 
-json.dump(tasks1, outfile)
+
 with open('temp_snapshot.txt', 'w') as outfile:
-    json.dump(tasks1, outfile)
+    json.dump(requests.get("https://www.meistertask.com/api/tasks?",headers=headers).text, outfile)
 
