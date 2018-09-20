@@ -16,7 +16,6 @@ def token(filename):
 
 headers = {"Authorization":"Bearer " + token("meistertask_token.txt")}
 
-
 #REQUESTS TO THE ENDPOINTS:
 request_all_persons = json.loads(requests.get("https://www.meistertask.com/api/persons",headers=headers).text)
 request_all_active_projects = json.loads(requests.get("https://www.meistertask.com/api/projects?status=active",headers=headers).text)
@@ -78,25 +77,32 @@ def formatted_date(Date_and_Time_unformatted):
         formatted = str(format(Date_and_Time.day, "02")) + "." + str(format(Date_and_Time.month, "02")) + "." + str(Date_and_Time.year)
         return formatted
 
+
+
 ### TELEGRAM-BOT
 
-
-
-
-# #TEMP
+# ###TEMP
 # request_all_tasks_0 = [{'id': 29255251, 'token': 'gQnSS2YU', 'name': 'Modify the ban rules', 'notes': '', 'notes_html': 'alte notes html', 'status': 1, 'status_updated_at': '2018-07-02T13:28:31.000000Z', 'section_id': 9018907, 'sequence': 1.0, 'assigned_to_id': 32126941, 'due': '2018-07-06T09:00:00.000000Z', 'created_at': '2018-07-02T13:17:26.748509Z', 'updated_at': '2018-07-02T13:30:49.584830Z'}, {'id': 29260355, 'token': 'm1fAhQHJ', 'name': 'Copy answers from another Q', 'notes': 'Enable following features:\n- Save answers added manually as predefined answers for future use.\n- Copy answers from another question.', 'notes_html': '<p>Enable following features:</p>\n\n<ul>\n<li>Save answers added manually as predefined answers for future use.</li>\n<li>Copy answers from another question.</li>\n</ul>\n', 'status': 8, 'status_updated_at': '2018-07-17T14:03:47.022978Z', 'section_id': 9018907, 'sequence': 2.0, 'assigned_to_id': None, 'due': None, 'created_at': '2018-07-02T14:07:47.035671Z', 'updated_at': '2018-07-17T14:03:47.023263Z'}]
 # request_all_tasks_1 = [{'id': 29255251, 'token': 'gQnSS2YU', 'name': 'Modify the ban rules (NEU)', 'notes': 'Neue_Notes ohne html', 'notes_html': '<p>This is html-text</p>', 'status': 2, 'status_updated_at': '2018-07-02T13:28:31.000000Z', 'section_id': 9018907, 'sequence': 1.0, 'assigned_to_id': 32512902, 'due': '2018-07-05T09:00:00.000000Z', 'created_at': '2018-07-02T13:17:26.748509Z', 'updated_at': '2018-07-02T13:30:49.584830Z'}, {'id': 30376008, 'token': '4z0ncrJE', 'name': 'Clarification Meeting with Alex', 'notes': 'Friday, July 27th', 'notes_html': '<p>Friday, July 27th</p>\n', 'status': 2, 'status_updated_at': '2018-08-14T07:09:11.989010Z', 'section_id': 9282074, 'sequence': 0.0, 'assigned_to_id': 32512902, 'due': '2018-07-27T09:00:00.000000Z', 'created_at': '2018-07-24T07:12:55.373106Z', 'updated_at': '2018-08-14T07:09:14.501628Z'}, {'id': 29260355, 'token': 'm1fAhQHJ', 'name': 'Copy answers from another Q', 'notes': 'Enable following features:\n- Save answers added manually as predefined answers for future use.\n- Copy answers from another question.', 'notes_html': '<p>Enable following features:</p>\n\n<ul>\n<li>Save answers added manually as predefined answers for future use.</li>\n<li>Copy answers from another question.</li>\n</ul>\n', 'status': 8, 'status_updated_at': '2018-07-17T14:03:47.022978Z', 'section_id': 9018907, 'sequence': 2.0, 'assigned_to_id': None, 'due': None, 'created_at': '2018-07-02T14:07:47.035671Z', 'updated_at': '2018-07-17T14:03:47.023263Z'}]
-#
-#
 # tasks0 = request_all_tasks_0
 # tasks1 = request_all_tasks_1
-# #TEMP
+# ####TEMP
 
-#Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.txt laden
-with open("temp_snapshot.txt", 'r') as json_file:
+
+
+
+
+
+# # TEMP für ersten Durchlauf
+# tasks0 = request_all_tasks
+
+# Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.txt laden
+with open("temp_snapshot.json", 'r') as json_file:
     tasks0 = json.load(json_file)
 
-#Zeitpunkt 1 (nachher) -> aktuelle API-Abfrage
+
+
+# Zeitpunkt 1 (nachher) -> aktuelle API-Abfrage
 tasks1 = request_all_tasks
 
 
@@ -104,7 +110,6 @@ tasks1 = request_all_tasks
 ################################## FALL 1: NEUE TASK WIRD ERSTELLTlsd
 
 # VORBEREITUNG
-
 #Liste der bot messages, die gesendet werden:
 bot_message_new_task = []
 #Zuordnung bot message - project id (damit der Bot weiß in welche Gruppe er welche Message posten soll
@@ -144,10 +149,12 @@ if len(tasks0).__eq__(len(tasks1)) == False:
             new_tasks_to_append.append(task_id_dict_all[id_neue_task])
             task_link = task_link_def(task_id_dict_all[id_neue_task]['token'])
 
-            ### CHANGE THIS FOR LINK IN THE BOT
-            # hyperlink_format = '<a href="{link}">{text}</a>'
-            # task_name = hyperlink_format.format(link=task_link, text="'" + str(task_id_dict_all[id_neue_task]['name']) + "'")
-            task_name = str(task_id_dict_all[id_neue_task]['name'])
+            ## CHANGE THIS FOR LINK IN THE BOT
+            hyperlink_format = '<a href="{link}">{text}</a>'
+            task_name = hyperlink_format.format(link=task_link, text="'" + str(task_id_dict_all[id_neue_task]['name']) + "'")
+
+
+            # task_name = str(task_id_dict_all[id_neue_task]['name'])
             ### CHANGE THIS FOR LINK IN THE BOT
 
             section_name = str(section_id_dict[task_id_dict_all[id_neue_task]['section_id']])
@@ -183,7 +190,8 @@ if len(tasks0).__eq__(len(tasks1)) == False:
 
 
 # wenn neue Task dazugekommen ist, füge diese neue Task den alten Daten hinzu. Nach dem Hinzufügen müssen die Daten dann noch sortiert werden, damit die Vergleichsfunktion korrekt funktioniert.
-tasks0 = request_all_tasks+new_tasks_to_append
+tasks0temp = tasks0
+tasks0 = tasks0temp+new_tasks_to_append
 
 # Daten nach ID sortieren:
 tasks0s = sorted(tasks0, key=lambda k: k['id'])
@@ -304,7 +312,6 @@ dcn_internals_id = -1001244966399
 dcn_database_id = -1001160615253
 dcn_dentavox_id = -1001395312696
 
-TEST_id = -1001291311714
 
 project_id_list_fix = [2475043, 2475175, 2477482, 2477491, 2522931, 2522949, 2522953, 2522956, 2522987, 2525393, 2540028, 2543566]
 
@@ -322,22 +329,50 @@ project_id_dict_fix = { "2475043": "DentaVox",
                         "2543566": "Database"
                         }
 
+
+###REAKTIVIEREN, WENN TEST FERTIG
 ### ZUORDNUNG Bot Message (Projekt ID) - Telegram Gruppe (Chat ID)
 # dict: {project_id: chat_id_telegram}
+# which_group_text = {"DentaVox": dcn_dentavox_id,
+#                     "Trusted Reviews": dcn_trusted_reviews_id,
+#                     "Dentacare": dcn_dentacare_id,
+#                     "Content (Blog/Email/Social Articles)": dcn_blogs_ads_pr_id,
+#                     "Dentacoin Website": dcn_website_id,
+#                     "Dentacoin Wallet": dcn_wallet_id,
+#                     "Assurance": dcn_internals_id,
+#                     "PR & Advertising": dcn_blogs_ads_pr_id,
+#                     "Other Tasks": dcn_internals_id,
+#                     "Events & Initiatives": dcn_blogs_ads_pr_id,
+#                     "Skills Enhancement": dcn_internals_id,
+#                     "Database": dcn_database_id
+#                     }
+###REAKTIVIEREN, WENN TEST FERTIG
 
-which_group_text = {"DentaVox": dcn_dentavox_id,
-                    "Trusted Reviews": dcn_trusted_reviews_id,
-                    "Dentacare": dcn_dentacare_id,
-                    "Content (Blog/Email/Social Articles)": dcn_blogs_ads_pr_id,
-                    "Dentacoin Website": dcn_website_id,
-                    "Dentacoin Wallet": dcn_wallet_id,
-                    "Assurance": dcn_internals_id,
-                    "PR & Advertising": dcn_blogs_ads_pr_id,
-                    "Other Tasks": dcn_internals_id,
-                    "Events & Initiatives": dcn_blogs_ads_pr_id,
-                    "Skills Enhancement": dcn_internals_id,
-                    "Database": dcn_database_id
+
+
+
+###TEMP
+###TESTDURCHLAUF FÜR NACHRICHTEN VERSCHICKEN
+test_id = -1001291311714
+which_group_text = {"DentaVox": test_id,
+                    "Trusted Reviews": test_id,
+                    "Dentacare": test_id,
+                    "Content (Blog/Email/Social Articles)": test_id,
+                    "Dentacoin Website": test_id,
+                    "Dentacoin Wallet": test_id,
+                    "Assurance": test_id,
+                    "PR & Advertising": test_id,
+                    "Other Tasks": test_id,
+                    "Events & Initiatives": test_id,
+                    "Skills Enhancement": test_id,
+                    "Database": test_id
                     }
+
+###TEMP
+
+
+
+
 
 #Aus which_group_text wird ein dictionary nur mit Zahlen (project_id: chat_id_telegram)
 
@@ -346,22 +381,30 @@ for i in range (0, len(project_id_list_fix)):
     which_group[project_id_list_fix[i]] = which_group_text[project_id_dict_fix[str(project_id_list_fix[i])]]
 
 
+
+###LISTE DER MESSAGES
+print(bot_message_new_task)
+print(bot_message_task_changed)
+
+##########
 ## Chats werden abgeschickt (NEUE TASK)
 for i in range (0, len(bot_message_new_task)):
-    send_message(bot_message_new_task[i], which_group[bot_message_new_task_dict[bot_message_new_task[i]]])
+    send_message(str(bot_message_new_task[i]), which_group[bot_message_new_task_dict[bot_message_new_task[i]]])
 
 ## Chats werden abgeschickt (VERÄNDERTE TASK)
 
 for i in range (0, len(bot_message_task_changed)):
-    send_message(bot_message_task_changed[i], which_group[bot_message_task_changed_dict[bot_message_task_changed[i]]])
+    send_message(str(bot_message_task_changed[i]), which_group[bot_message_task_changed_dict[bot_message_task_changed[i]]])
+###########
+
+
+
 
 
 ### Datenbank-Eintrag neuer Messages mit Zeit, Datum ???
 
 ### tasks1 in json exportieren und alte Daten überschreiben
 
-
-
-with open('temp_snapshot.txt', 'w') as outfile:
-    json.dump(requests.get("https://www.meistertask.com/api/tasks?",headers=headers).text, outfile)
+with open('temp_snapshot.json', 'w') as outfile:
+    json.dump(tasks1, outfile)
 
