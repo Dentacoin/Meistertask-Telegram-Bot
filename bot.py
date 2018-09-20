@@ -10,9 +10,9 @@ import urllib
 #BASIC STUFF FOR AUTHORIZATION
 
 def token(filename):
-    with open(str(filename), "r") as file:
-        return str(file.readline())
-
+    with open(filename, "r") as file:
+        token_temp = str(file.read()).strip('\n')
+        return token_temp
 
 headers = {"Authorization":"Bearer " + token("meistertask_token.txt")}
 
@@ -93,8 +93,8 @@ def formatted_date(Date_and_Time_unformatted):
 
 
 
-# # TEMP für ersten Durchlauf
-# tasks0 = request_all_tasks
+# TEMP für ersten Durchlauf
+#tasks0 = request_all_tasks
 
 # Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.txt laden
 with open("temp_snapshot.json", 'r') as json_file:
@@ -297,7 +297,7 @@ def get_last_chat_id_and_text(updates):
 
 def send_message(text, chat_id):
     text = urllib.parse.quote_plus(text)
-    url = URL + "sendMessage?text={}&chat_id={}".format(text, chat_id)
+    url = URL + "sendMessage?text={}&chat_id={}&parse_mode={}".format(text, chat_id, "HTML")
     get_url(url)
 
 
@@ -330,48 +330,45 @@ project_id_dict_fix = { "2475043": "DentaVox",
                         }
 
 
-###REAKTIVIEREN, WENN TEST FERTIG
-### ZUORDNUNG Bot Message (Projekt ID) - Telegram Gruppe (Chat ID)
-# dict: {project_id: chat_id_telegram}
-# which_group_text = {"DentaVox": dcn_dentavox_id,
-#                     "Trusted Reviews": dcn_trusted_reviews_id,
-#                     "Dentacare": dcn_dentacare_id,
-#                     "Content (Blog/Email/Social Articles)": dcn_blogs_ads_pr_id,
-#                     "Dentacoin Website": dcn_website_id,
-#                     "Dentacoin Wallet": dcn_wallet_id,
-#                     "Assurance": dcn_internals_id,
-#                     "PR & Advertising": dcn_blogs_ads_pr_id,
-#                     "Other Tasks": dcn_internals_id,
-#                     "Events & Initiatives": dcn_blogs_ads_pr_id,
-#                     "Skills Enhancement": dcn_internals_id,
-#                     "Database": dcn_database_id
-#                     }
-###REAKTIVIEREN, WENN TEST FERTIG
+##REAKTIVIEREN, WENN TEST FERTIG
+## ZUORDNUNG Bot Message (Projekt ID) - Telegram Gruppe (Chat ID)
+#dict: {project_id: chat_id_telegram}
+which_group_text = {"DentaVox": dcn_dentavox_id,
+                    "Trusted Reviews": dcn_trusted_reviews_id,
+                    "Dentacare": dcn_dentacare_id,
+                    "Content (Blog/Email/Social Articles)": dcn_blogs_ads_pr_id,
+                    "Dentacoin Website": dcn_website_id,
+                    "Dentacoin Wallet": dcn_wallet_id,
+                    "Assurance": dcn_internals_id,
+                    "PR & Advertising": dcn_blogs_ads_pr_id,
+                    "Other Tasks": dcn_internals_id,
+                    "Events & Initiatives": dcn_blogs_ads_pr_id,
+                    "Skills Enhancement": dcn_internals_id,
+                    "Database": dcn_database_id
+                    }
+##REAKTIVIEREN, WENN TEST FERTIG
 
 
 
 
 ###TEMP
 ###TESTDURCHLAUF FÜR NACHRICHTEN VERSCHICKEN
-test_id = -1001291311714
-which_group_text = {"DentaVox": test_id,
-                    "Trusted Reviews": test_id,
-                    "Dentacare": test_id,
-                    "Content (Blog/Email/Social Articles)": test_id,
-                    "Dentacoin Website": test_id,
-                    "Dentacoin Wallet": test_id,
-                    "Assurance": test_id,
-                    "PR & Advertising": test_id,
-                    "Other Tasks": test_id,
-                    "Events & Initiatives": test_id,
-                    "Skills Enhancement": test_id,
-                    "Database": test_id
-                    }
+# test_id = -1001291311714
+# which_group_text = {"DentaVox": test_id,
+#                     "Trusted Reviews": test_id,
+#                     "Dentacare": test_id,
+#                     "Content (Blog/Email/Social Articles)": test_id,
+#                     "Dentacoin Website": test_id,
+#                     "Dentacoin Wallet": test_id,
+#                     "Assurance": test_id,
+#                     "PR & Advertising": test_id,
+#                     "Other Tasks": test_id,
+#                     "Events & Initiatives": test_id,
+#                     "Skills Enhancement": test_id,
+#                     "Database": test_id
+#                     }
 
 ###TEMP
-
-
-
 
 
 #Aus which_group_text wird ein dictionary nur mit Zahlen (project_id: chat_id_telegram)
@@ -382,9 +379,15 @@ for i in range (0, len(project_id_list_fix)):
 
 
 
+
+
+
 ###LISTE DER MESSAGES
 print(bot_message_new_task)
 print(bot_message_task_changed)
+
+
+
 
 ##########
 ## Chats werden abgeschickt (NEUE TASK)
@@ -407,4 +410,3 @@ for i in range (0, len(bot_message_task_changed)):
 
 with open('temp_snapshot.json', 'w') as outfile:
     json.dump(tasks1, outfile)
-
