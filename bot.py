@@ -329,15 +329,15 @@ print(bot_message_task_changed)
 
 
 
-##########
-## Chats werden abgeschickt (NEUE TASK)
-for i in range (0, len(bot_message_new_task)):
-    send_message(str(bot_message_new_task[i]), which_group[bot_message_new_task_dict[bot_message_new_task[i]]])
-
-## Chats werden abgeschickt (VERÄNDERTE TASK)
-
-for i in range (0, len(bot_message_task_changed)):
-    send_message(str(bot_message_task_changed[i]), which_group[bot_message_task_changed_dict[bot_message_task_changed[i]]])
+# ##########
+# ## Chats werden abgeschickt (NEUE TASK)
+# for i in range (0, len(bot_message_new_task)):
+#     send_message(str(bot_message_new_task[i]), which_group[bot_message_new_task_dict[bot_message_new_task[i]]])
+#
+# ## Chats werden abgeschickt (VERÄNDERTE TASK)
+#
+# for i in range (0, len(bot_message_task_changed)):
+#     send_message(str(bot_message_task_changed[i]), which_group[bot_message_task_changed_dict[bot_message_task_changed[i]]])
 
 
 
