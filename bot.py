@@ -80,15 +80,8 @@ def formatted_date(Date_and_Time_unformatted):
 
 
 
-
-
-
-
-
-
-
-### TELEGRAM-BOT
-
+# ### TELEGRAM-BOT
+#
 # ###TEMP
 # request_all_tasks_0 = [{'id': 29255251, 'token': 'gQnSS2YU', 'name': 'Modify the ban rules', 'notes': '', 'notes_html': 'alte notes html', 'status': 1, 'status_updated_at': '2018-07-02T13:28:31.000000Z', 'section_id': 9018907, 'sequence': 1.0, 'assigned_to_id': 32126941, 'due': '2018-07-06T09:00:00.000000Z', 'created_at': '2018-07-02T13:17:26.748509Z', 'updated_at': '2018-07-02T13:30:49.584830Z'}, {'id': 29260355, 'token': 'm1fAhQHJ', 'name': 'Copy answers from another Q', 'notes': 'Enable following features:\n- Save answers added manually as predefined answers for future use.\n- Copy answers from another question.', 'notes_html': '<p>Enable following features:</p>\n\n<ul>\n<li>Save answers added manually as predefined answers for future use.</li>\n<li>Copy answers from another question.</li>\n</ul>\n', 'status': 8, 'status_updated_at': '2018-07-17T14:03:47.022978Z', 'section_id': 9018907, 'sequence': 2.0, 'assigned_to_id': None, 'due': None, 'created_at': '2018-07-02T14:07:47.035671Z', 'updated_at': '2018-07-17T14:03:47.023263Z'}]
 # request_all_tasks_1 = [{'id': 29255251, 'token': 'gQnSS2YU', 'name': 'Modify the ban rules (NEU)', 'notes': 'Neue_Notes ohne html', 'notes_html': '<p>This is html-text</p>', 'status': 2, 'status_updated_at': '2018-07-02T13:28:31.000000Z', 'section_id': 9018907, 'sequence': 1.0, 'assigned_to_id': 32512902, 'due': '2018-07-05T09:00:00.000000Z', 'created_at': '2018-07-02T13:17:26.748509Z', 'updated_at': '2018-07-02T13:30:49.584830Z'}, {'id': 30376008, 'token': '4z0ncrJE', 'name': 'Clarification Meeting with Alex', 'notes': 'Friday, July 27th', 'notes_html': '<p>Friday, July 27th</p>\n', 'status': 2, 'status_updated_at': '2018-08-14T07:09:11.989010Z', 'section_id': 9282074, 'sequence': 0.0, 'assigned_to_id': 32512902, 'due': '2018-07-27T09:00:00.000000Z', 'created_at': '2018-07-24T07:12:55.373106Z', 'updated_at': '2018-08-14T07:09:14.501628Z'}, {'id': 29260355, 'token': 'm1fAhQHJ', 'name': 'Copy answers from another Q', 'notes': 'Enable following features:\n- Save answers added manually as predefined answers for future use.\n- Copy answers from another question.', 'notes_html': '<p>Enable following features:</p>\n\n<ul>\n<li>Save answers added manually as predefined answers for future use.</li>\n<li>Copy answers from another question.</li>\n</ul>\n', 'status': 8, 'status_updated_at': '2018-07-17T14:03:47.022978Z', 'section_id': 9018907, 'sequence': 2.0, 'assigned_to_id': None, 'due': None, 'created_at': '2018-07-02T14:07:47.035671Z', 'updated_at': '2018-07-17T14:03:47.023263Z'}]
@@ -96,18 +89,17 @@ def formatted_date(Date_and_Time_unformatted):
 # tasks1 = request_all_tasks_1
 # ####TEMP
 
+# # TEMP für ersten Durchlauf
+# tasks0 = request_all_tasks
 
 
 
 
 
-# TEMP für ersten Durchlauf
-tasks0 = request_all_tasks
 
-# Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.txt laden
-#with open("temp_snapshot.json", 'r') as json_file:
-#    tasks0 = json.load(json_file)
-
+# Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.json laden
+with open("temp_snapshot.json", 'r') as json_file:
+   tasks0 = json.load(json_file)
 
 
 # Zeitpunkt 1 (nachher) -> aktuelle API-Abfrage
@@ -122,7 +114,9 @@ tasks1 = request_all_tasks
 bot_message_new_task = []
 #Zuordnung bot message - project id (damit der Bot weiß in welche Gruppe er welche Message posten soll
 bot_message_new_task_dict = {}
-
+# Aus telegram_usernames_outside (aus a_telegram_usernames.json) wird ein dictionary nur mit Zahlen (person_id: telegram_username)
+with open("a_telegram_usernames.json", 'r') as telegram_usernames_file:
+   telegram_usernames = json.load(telegram_usernames_file)
 
 
 #Falls dazugekommen, neue Tasks (zum Anhängen an tasks0 -> Nur dann können die Daten im nächsten Schritt auf Veränderungen geprüft werden)
@@ -157,16 +151,12 @@ if len(tasks0).__eq__(len(tasks1)) == False:
             new_tasks_to_append.append(task_id_dict_all[id_neue_task])
             task_link = task_link_def(task_id_dict_all[id_neue_task]['token'])
 
-            ## CHANGE THIS FOR LINK IN THE BOT
             hyperlink_format = '<a href="{link}">{text}</a>'
-            task_name = hyperlink_format.format(link=task_link, text="'" + str(task_id_dict_all[id_neue_task]['name']) + "'")
-
-
-            # task_name = str(task_id_dict_all[id_neue_task]['name'])
-            ### CHANGE THIS FOR LINK IN THE BOT
-
-            section_name = str(section_id_dict[task_id_dict_all[id_neue_task]['section_id']])
-            project_name = str(section_id_project_name_dict[task_id_dict_all[id_neue_task]['section_id']])
+            task_name = "<b>{}</b>".format(str(hyperlink_format.format(link=task_link, text=str(task_id_dict_all[id_neue_task]['name']))))
+            section_name = "<b>{}</b>".format(str(section_id_dict[task_id_dict_all[id_neue_task]['section_id']]))
+            project_name = "<b>{}</b>".format(str(section_id_project_name_dict[task_id_dict_all[id_neue_task]['section_id']]))
+            person_name = "<b>{}</b>(@{})".format(str(person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]),str(telegram_usernames[person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]]))
+            formatted_due_date = "<b>{}</b>".format(formatted_date(task_id_dict_all[id_neue_task]['due']))
 
             ##Generiere eine Message, dass eine neue Task erstellt wurde abhängig von den Infos zur Task (ist assigned_to_id, notes oder due bereits vorhanden? Falls ja muss das in die Message)
 
@@ -178,14 +168,12 @@ if len(tasks0).__eq__(len(tasks1)) == False:
 
             #wenn assigned_to_id nicht None, dann Füge Satz mit Person hinzu.
             if task_id_dict_all[id_neue_task]['assigned_to_id'] != None:
-                person_name = str(person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']])
                 assigned = " It is assigned to " + person_name + "."
             else:
                 assigned = ""
 
             # wenn due nicht None, dann füge Satz mit due date hinzu (the due date is xx.xx.xxxx)
             if task_id_dict_all[id_neue_task]['due'] != None:
-                formatted_due_date = formatted_date(task_id_dict_all[id_neue_task]['due'])
                 due_date = " The due date is " + formatted_due_date + "."
             else:
                 due_date = ""
@@ -229,41 +217,46 @@ for i in range(0, len(tasks0s)):
             #VORBEREITUNG/VEREINFACHUNG:
             key_which_has_changed = task_keys[j]
 
-            task_name_new = str(t1["name"])
-            section_name_new = str(section_id_dict[t1['section_id']])
+            # Link auf die Task (für bot message):
+            task_link = task_link_def(t1['token'])
+            task_name_new = "<b>{}</b>".format(str(hyperlink_format.format(link=task_link, text="'" + str(t1["name"]) + "'")))
+            notes_new = "<b>{}</b>".format(str(t1["notes_html"]))
+            status_new = "<b>{}</b>".format(str(status_dict[t1["status"]]))
+            section_name_new = "<b>{}</b>".format(str(section_id_dict[t1['section_id']]))
             section_name_old = str(section_id_dict[t0['section_id']])
-            project_name = str(section_id_project_name_dict[t1['section_id']])
-            due_date_new = str(formatted_date(t1["due"]))
+            project_name = "<b>{}</b>".format(str(section_id_project_name_dict[t1['section_id']]))
+            due_date_new = "<b>{}</b>".format(str(formatted_date(t1["due"])))
+            person_assigned_new = "<b>{}</b>(@{})".format(str(person_id_dict[t1["assigned_to_id"]]),str(telegram_usernames[person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]]))
 
 
 
             #Fall 1: Der Name wurde geändert
             if key_which_has_changed == 'name':
-                message_name_changed = "The name of the task '" + str(t0["name"]) + "' was changed to '" + task_name_new + "' (section " + section_name_new + " at project " + project_name + ")"
+                message_name_changed = "The name of the task " + str(t0["name"]) + " was changed to " + task_name_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_name_changed)
                 bot_message_task_changed_dict[message_name_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 2: Die Notizen (notes) wurden geändert
             if key_which_has_changed == 'notes_html':
-                message_notes_changed = "The notes of the task '" + task_name_new + "' have been changed to '" + str(t1["notes_html"] + "' (section " + section_name_new + " at project " + project_name + ")")
+                message_notes_changed = "The notes of the task " + task_name_new + " have been changed to " + notes_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_notes_changed)
                 bot_message_task_changed_dict[message_notes_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 3: Der Status wurde geändert
             if key_which_has_changed == 'status':
-                message_status_changed = "The status of the task '" + task_name_new + "' has been changed to '" + str(status_dict[t1["status"]]) + "' (section " + section_name_new + " at project " + project_name + ")"
+                message_status_changed = "The status of the task " + task_name_new + " has been changed to " + status_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_status_changed)
                 bot_message_task_changed_dict[message_status_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 4: Das Fälligkeitsdatum (due) wurde geändert
             if key_which_has_changed == 'due':
-                message_duedate_changed = "The due date of the task '" + task_name_new + "' has been changed to " + due_date_new + " (section " + section_name_new + " at project " + project_name + ")"
+                message_duedate_changed = "The due date of the task " + task_name_new + " has been changed to " + due_date_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_duedate_changed)
                 bot_message_task_changed_dict[message_duedate_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 5: Die zuständige Person (assigned_to_id) wurde geändert (Eine Task kann nur einer Person zugeordnet werden)
             if key_which_has_changed == 'assigned_to_id':
-                message_assigned_to_changed = "The task '" + task_name_new + "' is now assigned to " + str(person_id_dict[t1["assigned_to_id"]]) + " (section " + section_name_new + " at project " + project_name + ")"
+                message_assigned_to_changed = "The task " + task_name_new + " is now assigned to " + person_assigned_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_assigned_to_changed)
                 bot_message_task_changed_dict[message_assigned_to_changed] = task_id_project_id_dict[t0["id"]]
 
@@ -309,92 +302,21 @@ def send_message(text, chat_id):
     get_url(url)
 
 
-
 #CHAT-IDs der einzelnen Telegram Gruppen
-dcn_website_id = -312960500
-dcn_wallet_id = -318668419
-dcn_dentacare_id = -1001211449656
-dcn_trusted_reviews_id = -1001262389080
-dcn_blogs_ads_pr_id = -1001352094095
-dcn_internals_id = -1001244966399
-dcn_database_id = -1001160615253
-dcn_dentavox_id = -1001395312696
+with open("c_chat_id_telegram_groups.json", 'r') as chat_id_file:
+    chat_id = json.load(chat_id_file)
 
-
-project_id_list_fix = [2475043, 2475175, 2477482, 2477491, 2522931, 2522949, 2522953, 2522956, 2522987, 2525393, 2540028, 2543566]
-
-project_id_dict_fix = { "2475043": "DentaVox",
-                        "2475175": "Trusted Reviews",
-                        "2477482": "Dentacare",
-                        "2477491": "Content (Blog/Email/Social Articles)",
-                        "2522931": "Dentacoin Website",
-                        "2522949": "Dentacoin Wallet",
-                        "2522953": "Assurance",
-                        "2522956": "PR & Advertising",
-                        "2522987": "Other Tasks",
-                        "2525393": "Events & Initiatives",
-                        "2540028": "Skills Enhancement",
-                        "2543566": "Database"
-                        }
-
-
-##REAKTIVIEREN, WENN TEST FERTIG
-## ZUORDNUNG Bot Message (Projekt ID) - Telegram Gruppe (Chat ID)
-#dict: {project_id: chat_id_telegram}
-which_group_text = {"DentaVox": dcn_dentavox_id,
-                    "Trusted Reviews": dcn_trusted_reviews_id,
-                    "Dentacare": dcn_dentacare_id,
-                    "Content (Blog/Email/Social Articles)": dcn_blogs_ads_pr_id,
-                    "Dentacoin Website": dcn_website_id,
-                    "Dentacoin Wallet": dcn_wallet_id,
-                    "Assurance": dcn_internals_id,
-                    "PR & Advertising": dcn_blogs_ads_pr_id,
-                    "Other Tasks": dcn_internals_id,
-                    "Events & Initiatives": dcn_blogs_ads_pr_id,
-                    "Skills Enhancement": dcn_internals_id,
-                    "Database": dcn_database_id
-                    }
-##REAKTIVIEREN, WENN TEST FERTIG
-
-
-
-
-###TEMP
-###TESTDURCHLAUF FÜR NACHRICHTEN VERSCHICKEN
-# test_id = -1001291311714
-# which_group_text = {"DentaVox": test_id,
-#                     "Trusted Reviews": test_id,
-#                     "Dentacare": test_id,
-#                     "Content (Blog/Email/Social Articles)": test_id,
-#                     "Dentacoin Website": test_id,
-#                     "Dentacoin Wallet": test_id,
-#                     "Assurance": test_id,
-#                     "PR & Advertising": test_id,
-#                     "Other Tasks": test_id,
-#                     "Events & Initiatives": test_id,
-#                     "Skills Enhancement": test_id,
-#                     "Database": test_id
-#                     }
-
-###TEMP
-
-
-#Aus which_group_text wird ein dictionary nur mit Zahlen (project_id: chat_id_telegram)
-
+#Aus which_group_text (aus b_dentacoin_projects_assigned_to_telegram_groups.json) wird dictionary "which_groups" nur mit Zahlen (project_id: chat_id_telegram)
+with open("b_dentacoin_projects_assigned_to_telegram_groups.json", 'r') as which_group_text_file:
+    which_group_text = json.load(which_group_text_file)
 which_group = {}
-for i in range (0, len(project_id_list_fix)):
-    which_group[project_id_list_fix[i]] = which_group_text[project_id_dict_fix[str(project_id_list_fix[i])]]
+for i in range (0, len(project_id_list)):
+    which_group[project_id_list[i]] = chat_id[which_group_text[project_id_dict[project_id_list[i]]]]
 
 
-
-
-
-
-###LISTE DER MESSAGES
+###AUSGABE DER BOT-MESSAGES FÜR BYOBU
 print(bot_message_new_task)
 print(bot_message_task_changed)
-
-
 
 
 ##########
@@ -410,11 +332,7 @@ for i in range (0, len(bot_message_task_changed)):
 
 
 
-
-
-### Datenbank-Eintrag neuer Messages mit Zeit, Datum ???
-
-### tasks1 in json exportieren und alte Daten überschreiben
+## tasks1 in json exportieren und alte Daten überschreiben
 
 with open('temp_snapshot.json', 'w') as outfile:
     json.dump(tasks1, outfile)
