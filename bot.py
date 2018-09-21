@@ -167,7 +167,7 @@ if len(tasks0).__eq__(len(tasks1)) == False:
 
             #wenn assigned_to_id nicht None, dann Füge Satz mit Person hinzu.
             if task_id_dict_all[id_neue_task]['assigned_to_id'] != None:
-                person_name = "<b>{}</b>(@{})".format(str(person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]), str(telegram_usernames[person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]]))
+                person_name = "<b>{}</b> (@{})".format(str(person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]), str(telegram_usernames[person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]]))
                 assigned = " It is assigned to " + person_name + "."
             else:
                 assigned = ""
@@ -230,7 +230,7 @@ for i in range(0, len(tasks0s)):
             if t1["assigned_to_id"] == None:
                 person_assigned = ""
             else:
-                person_assigned = "(Currently assigned to: <b>{}</b>(@{}))".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
+                person_assigned = "(Currently assigned to: <b>{}</b> (@{}))".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
 
             #Fall 1: Der Name wurde geändert
             if key_which_has_changed == 'name':
@@ -262,7 +262,7 @@ for i in range(0, len(tasks0s)):
                 if t1["assigned_to_id"] == None:
                     person_assigned_new = "Nobody"
                 else:
-                    person_assigned_new = "<b>{}</b>(@{})".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
+                    person_assigned_new = "<b>{}</b> (@{})".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
                 message_assigned_to_changed = "The task " + task_name_new + " is now assigned to " + person_assigned_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_assigned_to_changed)
                 bot_message_task_changed_dict[message_assigned_to_changed] = task_id_project_id_dict[t0["id"]]
