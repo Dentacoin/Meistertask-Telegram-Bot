@@ -219,6 +219,7 @@ for i in range(0, len(tasks0s)):
 
             # Link auf die Task (für bot message):
             task_link = task_link_def(t1['token'])
+            hyperlink_format = '<a href="{link}">{text}</a>'
             task_name_new = "<b>{}</b>".format(str(hyperlink_format.format(link=task_link, text="'" + str(t1["name"]) + "'")))
             notes_new = "<b>{}</b>".format(str(t1["notes_html"]))
             status_new = "<b>{}</b>".format(str(status_dict[t1["status"]]))
