@@ -258,7 +258,11 @@ for i in range(0, len(tasks0s)):
 
             #Fall 5: Die zuständige Person (assigned_to_id) wurde geändert (Eine Task kann nur einer Person zugeordnet werden)
             if key_which_has_changed == 'assigned_to_id':
-                person_assigned_new = "<b>{}</b>(@{})".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
+
+                if t1["assigned_to_id"] == None:
+                    person_assigned_new = "Nobody"
+                else:
+                    person_assigned_new = "<b>{}</b>(@{})".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
                 message_assigned_to_changed = "The task " + task_name_new + " is now assigned to " + person_assigned_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_assigned_to_changed)
                 bot_message_task_changed_dict[message_assigned_to_changed] = task_id_project_id_dict[t0["id"]]
