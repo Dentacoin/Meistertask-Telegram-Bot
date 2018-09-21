@@ -155,7 +155,6 @@ if len(tasks0).__eq__(len(tasks1)) == False:
             task_name = "<b>{}</b>".format(str(hyperlink_format.format(link=task_link, text=str(task_id_dict_all[id_neue_task]['name']))))
             section_name = "<b>{}</b>".format(str(section_id_dict[task_id_dict_all[id_neue_task]['section_id']]))
             project_name = "<b>{}</b>".format(str(section_id_project_name_dict[task_id_dict_all[id_neue_task]['section_id']]))
-            person_name = "<b>{}</b>(@{})".format(str(person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]),str(telegram_usernames[person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]]))
             formatted_due_date = "<b>{}</b>".format(formatted_date(task_id_dict_all[id_neue_task]['due']))
 
             ##Generiere eine Message, dass eine neue Task erstellt wurde abhängig von den Infos zur Task (ist assigned_to_id, notes oder due bereits vorhanden? Falls ja muss das in die Message)
@@ -168,6 +167,7 @@ if len(tasks0).__eq__(len(tasks1)) == False:
 
             #wenn assigned_to_id nicht None, dann Füge Satz mit Person hinzu.
             if task_id_dict_all[id_neue_task]['assigned_to_id'] != None:
+                person_name = "<b>{}</b>(@{})".format(str(person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]), str(telegram_usernames[person_id_dict[task_id_dict_all[id_neue_task]['assigned_to_id']]]))
                 assigned = " It is assigned to " + person_name + "."
             else:
                 assigned = ""
