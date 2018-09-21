@@ -127,7 +127,7 @@ def task_link_def(token):
     link = "https://www.meistertask.com/app/task/" + str(token) + "/"
     return link
 
-status_dict = {1: "open", 2: "completed", 8: "trashed", 18: "completed & archived"}
+status_dict = {1: "open", 2: "completed", 8: "trashed", 18: "completed & achived"}
 
 
 # Test: Besitzen beide json-Dateien die gleiche Länge (=Anzahl von Dictionaries = Anzahl an Tasks)
@@ -212,7 +212,7 @@ for i in range(0, len(tasks0s)):
         task0 = tasks0s[i][task_keys[j]]
         task1 = tasks1s[i][task_keys[j]]
 
-        if task0.__eq__(task1) == False:
+        if task0.__eq__(task1) == False or NotImplemented:
 
             #VORBEREITUNG/VEREINFACHUNG:
             key_which_has_changed = task_keys[j]
@@ -227,7 +227,10 @@ for i in range(0, len(tasks0s)):
             section_name_old = str(section_id_dict[t0['section_id']])
             project_name = "<b>{}</b>".format(str(section_id_project_name_dict[t1['section_id']]))
             due_date_new = "<b>{}</b>".format(str(formatted_date(t1["due"])))
-
+            if person_id_dict[t1["assigned_to_id"]] == None:
+                person_assigned = ""
+            else:
+                person_assigned = "(Currently assigned to: <b>{}</b>(@{}))".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
 
             #Fall 1: Der Name wurde geändert
             if key_which_has_changed == 'name':
