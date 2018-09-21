@@ -275,6 +275,80 @@ for i in range(0, len(tasks0s)):
                 bot_message_task_changed_dict[message_section_changed] = task_id_project_id_dict[t0["id"]]
 
 
+        if task0.__eq__(task1) == NotImplemented:
+
+            #VORBEREITUNG/VEREINFACHUNG:
+            key_which_has_changed = task_keys[j]
+
+            # Link auf die Task (für bot message):
+            task_link = task_link_def(t1['token'])
+            hyperlink_format = '<a href="{link}">{text}</a>'
+            task_name_new = str(hyperlink_format.format(link=task_link, text=str(t1["name"])))
+            notes_new = "<b>{}</b>".format(str(t1["notes_html"]))
+            status_new = "<b>{}</b>".format(str(status_dict[t1["status"]]))
+            section_name_new = "<b>{}</b>".format(str(section_id_dict[t1['section_id']]))
+            section_name_old = str(section_id_dict[t0['section_id']])
+            project_name = "<b>{}</b>".format(str(section_id_project_name_dict[t1['section_id']]))
+            due_date_new = "<b>{}</b>".format(str(formatted_date(t1["due"])))
+            if t1["assigned_to_id"] == None:
+                person_assigned = ""
+            else:
+                person_assigned = "(Currently assigned to: <b>{}</b> (@{}))".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
+
+            #Fall 1: Der Name wurde geändert
+            if key_which_has_changed == 'name':
+                message_name_changed = "The name of the task " + str(t0["name"]) + " was changed to " + task_name_new + " (section " + section_name_new + " at project " + project_name + ")"
+                bot_message_task_changed.append(message_name_changed)
+                bot_message_task_changed_dict[message_name_changed] = task_id_project_id_dict[t0["id"]]
+
+            #Fall 2: Die Notizen (notes) wurden geändert
+            if key_which_has_changed == 'notes_html':
+                message_notes_changed = "The notes of the task " + task_name_new + " have been changed to " + notes_new + " (section " + section_name_new + " at project " + project_name + ")"
+                bot_message_task_changed.append(message_notes_changed)
+                bot_message_task_changed_dict[message_notes_changed] = task_id_project_id_dict[t0["id"]]
+
+            #Fall 3: Der Status wurde geändert
+            if key_which_has_changed == 'status':
+                message_status_changed = "The status of the task " + task_name_new + " has been changed to " + status_new + " (section " + section_name_new + " at project " + project_name + ")"
+                bot_message_task_changed.append(message_status_changed)
+                bot_message_task_changed_dict[message_status_changed] = task_id_project_id_dict[t0["id"]]
+
+            #Fall 4: Das Fälligkeitsdatum (due) wurde geändert
+            if key_which_has_changed == 'due':
+                message_duedate_changed = "The due date of the task " + task_name_new + " has been changed to " + due_date_new + " (section " + section_name_new + " at project " + project_name + ")"
+                bot_message_task_changed.append(message_duedate_changed)
+                bot_message_task_changed_dict[message_duedate_changed] = task_id_project_id_dict[t0["id"]]
+
+            #Fall 5: Die zuständige Person (assigned_to_id) wurde geändert (Eine Task kann nur einer Person zugeordnet werden)
+            if key_which_has_changed == 'assigned_to_id':
+
+                if t1["assigned_to_id"] == None:
+                    person_assigned_new = "Nobody"
+                else:
+                    person_assigned_new = "<b>{}</b> (@{})".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
+                message_assigned_to_changed = "The task " + task_name_new + " is now assigned to " + person_assigned_new + " (section " + section_name_new + " at project " + project_name + ")"
+                bot_message_task_changed.append(message_assigned_to_changed)
+                bot_message_task_changed_dict[message_assigned_to_changed] = task_id_project_id_dict[t0["id"]]
+
+            #Fall 6: Die Task wurde in eine andere Section verschoben (section_id hat sich geändert)
+            if key_which_has_changed == 'section_id':
+                # message_section_changed = "The task {} has been moved to section {} from {} at project {}".format(task_name_new, section_name_new, section_name_old, project_name)
+                message_section_changed = "The task " + task_name_new + " has been moved to section " + section_name_new + " from " + section_name_old + " at project " + project_name
+                bot_message_task_changed.append(message_section_changed)
+                bot_message_task_changed_dict[message_section_changed] = task_id_project_id_dict[t0["id"]]
+
+
+
+###Einfachere Lösung für False UND NotImplemented möglich?
+
+
+
+
+
+
+
+
+
 ### BOT MESSAGES GENERIEREN (ABHÄNGIG VON PROJEKT)
 
 
