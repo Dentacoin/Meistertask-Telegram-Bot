@@ -227,7 +227,7 @@ for i in range(0, len(tasks0s)):
             section_name_old = str(section_id_dict[t0['section_id']])
             project_name = "<b>{}</b>".format(str(section_id_project_name_dict[t1['section_id']]))
             due_date_new = "<b>{}</b>".format(str(formatted_date(t1["due"])))
-            if person_id_dict[t1["assigned_to_id"]] == None:
+            if t1["assigned_to_id"] == None:
                 person_assigned = ""
             else:
                 person_assigned = "(Currently assigned to: <b>{}</b>(@{}))".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
