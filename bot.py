@@ -331,9 +331,8 @@ for i in range (0, len(bot_message_task_changed)):
     send_message(str(bot_message_task_changed[i]), which_group[bot_message_task_changed_dict[bot_message_task_changed[i]]])
 
 
-###########
 
-# send_message("Test", -1001244966399)
+###########
 
 ## tasks1 in json exportieren und alte Daten überschreiben
 
