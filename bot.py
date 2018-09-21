@@ -220,14 +220,13 @@ for i in range(0, len(tasks0s)):
             # Link auf die Task (für bot message):
             task_link = task_link_def(t1['token'])
             hyperlink_format = '<a href="{link}">{text}</a>'
-            task_name_new = "<b>{}</b>".format(str(hyperlink_format.format(link=task_link, text="'" + str(t1["name"]) + "'")))
+            task_name_new = "<b>{}</b>".format(str(hyperlink_format.format(link=task_link, text=str(t1["name"]))))
             notes_new = "<b>{}</b>".format(str(t1["notes_html"]))
             status_new = "<b>{}</b>".format(str(status_dict[t1["status"]]))
             section_name_new = "<b>{}</b>".format(str(section_id_dict[t1['section_id']]))
             section_name_old = str(section_id_dict[t0['section_id']])
             project_name = "<b>{}</b>".format(str(section_id_project_name_dict[t1['section_id']]))
             due_date_new = "<b>{}</b>".format(str(formatted_date(t1["due"])))
-            person_assigned_new = "<b>{}</b>(@{})".format(str(person_id_dict[t1["assigned_to_id"]]),str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
 
 
 
@@ -257,13 +256,14 @@ for i in range(0, len(tasks0s)):
 
             #Fall 5: Die zuständige Person (assigned_to_id) wurde geändert (Eine Task kann nur einer Person zugeordnet werden)
             if key_which_has_changed == 'assigned_to_id':
+                person_assigned_new = "<b>{}</b>(@{})".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
                 message_assigned_to_changed = "The task " + task_name_new + " is now assigned to " + person_assigned_new + " (section " + section_name_new + " at project " + project_name + ")"
                 bot_message_task_changed.append(message_assigned_to_changed)
                 bot_message_task_changed_dict[message_assigned_to_changed] = task_id_project_id_dict[t0["id"]]
 
             #Fall 6: Die Task wurde in eine andere Section verschoben (section_id hat sich geändert)
             if key_which_has_changed == 'section_id':
-                message_section_changed = "The task '" + task_name_new + "' has been moved to section " + section_name_new + " from " + section_name_old + " at project " + project_name
+                message_section_changed = "The task " + task_name_new + " has been moved to section " + section_name_new + " from " + section_name_old + " at project " + project_name
                 bot_message_task_changed.append(message_section_changed)
                 bot_message_task_changed_dict[message_section_changed] = task_id_project_id_dict[t0["id"]]
 
@@ -312,7 +312,7 @@ with open("b_dentacoin_projects_assigned_to_telegram_groups.json", 'r') as which
     which_group_text = json.load(which_group_text_file)
 which_group = {}
 for i in range (0, len(project_id_list)):
-    which_group[project_id_list[i]] = chat_id[which_group_text[project_id_dict[project_id_list[i]]]]
+    which_group[project_id_list[i]] = int(chat_id[which_group_text[project_id_dict[project_id_list[i]]]])
 
 
 ###AUSGABE DER BOT-MESSAGES FÜR BYOBU
@@ -329,9 +329,11 @@ for i in range (0, len(bot_message_new_task)):
 
 for i in range (0, len(bot_message_task_changed)):
     send_message(str(bot_message_task_changed[i]), which_group[bot_message_task_changed_dict[bot_message_task_changed[i]]])
+
+
 ###########
 
-
+# send_message("Test", -1001244966399)
 
 ## tasks1 in json exportieren und alte Daten überschreiben
 
