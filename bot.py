@@ -152,7 +152,7 @@ if len(tasks0).__eq__(len(tasks1)) == False:
             task_link = task_link_def(task_id_dict_all[id_neue_task]['token'])
 
             hyperlink_format = '<a href="{link}">{text}</a>'
-            task_name = "<b>{}</b>".format(str(hyperlink_format.format(link=task_link, text=str(task_id_dict_all[id_neue_task]['name']))))
+            task_name = str(hyperlink_format.format(link=task_link, text=str(task_id_dict_all[id_neue_task]['name'])))
             section_name = "<b>{}</b>".format(str(section_id_dict[task_id_dict_all[id_neue_task]['section_id']]))
             project_name = "<b>{}</b>".format(str(section_id_project_name_dict[task_id_dict_all[id_neue_task]['section_id']]))
             formatted_due_date = "<b>{}</b>".format(formatted_date(task_id_dict_all[id_neue_task]['due']))
@@ -220,14 +220,13 @@ for i in range(0, len(tasks0s)):
             # Link auf die Task (für bot message):
             task_link = task_link_def(t1['token'])
             hyperlink_format = '<a href="{link}">{text}</a>'
-            task_name_new = "<b>{}</b>".format(str(hyperlink_format.format(link=task_link, text=str(t1["name"]))))
+            task_name_new = str(hyperlink_format.format(link=task_link, text=str(t1["name"])))
             notes_new = "<b>{}</b>".format(str(t1["notes_html"]))
             status_new = "<b>{}</b>".format(str(status_dict[t1["status"]]))
             section_name_new = "<b>{}</b>".format(str(section_id_dict[t1['section_id']]))
             section_name_old = str(section_id_dict[t0['section_id']])
             project_name = "<b>{}</b>".format(str(section_id_project_name_dict[t1['section_id']]))
             due_date_new = "<b>{}</b>".format(str(formatted_date(t1["due"])))
-
 
 
             #Fall 1: Der Name wurde geändert
@@ -263,6 +262,7 @@ for i in range(0, len(tasks0s)):
 
             #Fall 6: Die Task wurde in eine andere Section verschoben (section_id hat sich geändert)
             if key_which_has_changed == 'section_id':
+                # message_section_changed = "The task {} has been moved to section {} from {} at project {}".format(task_name_new, section_name_new, section_name_old, project_name)
                 message_section_changed = "The task " + task_name_new + " has been moved to section " + section_name_new + " from " + section_name_old + " at project " + project_name
                 bot_message_task_changed.append(message_section_changed)
                 bot_message_task_changed_dict[message_section_changed] = task_id_project_id_dict[t0["id"]]
@@ -320,6 +320,8 @@ print(bot_message_new_task)
 print(bot_message_task_changed)
 
 
+
+
 ##########
 ## Chats werden abgeschickt (NEUE TASK)
 for i in range (0, len(bot_message_new_task)):
@@ -329,6 +331,8 @@ for i in range (0, len(bot_message_new_task)):
 
 for i in range (0, len(bot_message_task_changed)):
     send_message(str(bot_message_task_changed[i]), which_group[bot_message_task_changed_dict[bot_message_task_changed[i]]])
+
+
 
 
 
