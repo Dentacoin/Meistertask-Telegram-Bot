@@ -102,12 +102,11 @@ def formatted_date(Date_and_Time_unformatted):
 
 
 # TEMP für ersten Durchlauf
-tasks0 = request_all_tasks
+# tasks0 = request_all_tasks
 
 # Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.txt laden
-#with open("temp_snapshot.json", 'r') as json_file:
-#    tasks0 = json.load(json_file)
-
+with open("temp_snapshot.json", 'r') as json_file:
+   tasks0 = json.load(json_file)
 
 
 # Zeitpunkt 1 (nachher) -> aktuelle API-Abfrage
