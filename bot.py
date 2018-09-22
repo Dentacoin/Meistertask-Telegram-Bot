@@ -161,7 +161,7 @@ if len(tasks0).__eq__(len(tasks1)) == False:
 
             #wenn notes nicht None, dann Füge Notes in Klammern hinter Taskname und Link hinzu
             if task_id_dict_all[id_neue_task]['notes'] != None:
-                task_notes = "(" + str(task_id_dict_all[id_neue_task]['notes']) + ")"
+                task_notes = " (" + str(task_id_dict_all[id_neue_task]['notes']) + ")"
             else:
                 task_notes = ""
 
@@ -178,7 +178,7 @@ if len(tasks0).__eq__(len(tasks1)) == False:
             else:
                 due_date = ""
 
-            bot_message_new_task_temp = "The task " + task_name + " " + task_notes + " was created in section " + section_name + " of project " + project_name + "." + assigned + due_date
+            bot_message_new_task_temp = "The task " + task_name + task_notes + " was created in section " + section_name + " of project " + project_name + "." + assigned + due_date
             bot_message_new_task.append(bot_message_new_task_temp)
             bot_message_new_task_dict[bot_message_new_task_temp] = task_id_project_id_dict[id_neue_task]
 
