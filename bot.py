@@ -30,7 +30,7 @@ request_all_sections_pretty = json.dumps(request_all_sections, indent=4)
 request_all_tasks_pretty = json.dumps(request_all_tasks, indent=4)
 
 
-#DICTIONARIES OF PERSONS, PROJECTS, SECTIONS, TASKS (COMMENTS)
+#DICTIONARIES OF PERSONS, PROJECTS, SECTIONS, TASKS
 person_id_dict = {}
 for i in range(0, len(request_all_persons)):
     person_id_dict[request_all_persons[i]['id']] = str(request_all_persons[i]['firstname'] + " " + request_all_persons[i]['lastname'])
@@ -59,7 +59,6 @@ section_id_project_id_dict = {}
 for i in range(0, len(request_all_sections)):
     section_id_project_id_dict[request_all_sections[i]['id']] = request_all_sections[i]['project_id']
 
-
 task_id_dict_all = {}
 for i in range (0, len(request_all_tasks)):
     task_id_dict_all[request_all_tasks[i]['id']] = request_all_tasks[i]
@@ -83,17 +82,17 @@ def formatted_date(Date_and_Time_unformatted):
 ### TELEGRAM-BOT
 
 
-### activate to set up the bot on the first run
+# ## activate to set up the bot for the first run
 # tasks0 = request_all_tasks
 
 
-### deactivate to set up the bot on the first run
-# Zeitpunkt 0 (Stand vor 1 Minute) -> aus json temp_snapshot.json laden
+### deactivate to set up the bot for the first run (tasks0 and tasks1 are gonna be equal, this means only changes after this point of time will be recognized by the bot)
+# timestamp 0 (snapshot of all existing tasks one minute ago) -> load from json temp_snapshot.json
 with open("temp_snapshot.json", 'r') as json_file:
    tasks0 = json.load(json_file)
 
 
-# Zeitpunkt 1 (nachher) -> aktuelle API-Abfrage
+# timestamp 1 -> current API-request
 tasks1 = request_all_tasks
 
 
@@ -203,7 +202,7 @@ for i in range(0, len(tasks0s)):
         task0 = tasks0s[i][task_keys[j]]
         task1 = tasks1s[i][task_keys[j]]
 
-        if task0.__eq__(task1) == False:
+        if task0.__eq__(task1) == NotImplemented or False:
 
             #VORBEREITUNG/VEREINFACHUNG:
             key_which_has_changed = task_keys[j]
@@ -264,80 +263,6 @@ for i in range(0, len(tasks0s)):
                 message_section_changed = "The task " + task_name_new + " has been moved to section " + section_name_new + " from " + section_name_old + " at project " + project_name
                 bot_message_task_changed.append(message_section_changed)
                 bot_message_task_changed_dict[message_section_changed] = task_id_project_id_dict[t0["id"]]
-
-
-        if task0.__eq__(task1) == NotImplemented:
-
-            #VORBEREITUNG/VEREINFACHUNG:
-            key_which_has_changed = task_keys[j]
-
-            # Link auf die Task (für bot message):
-            task_link = task_link_def(t1['token'])
-            hyperlink_format = '<a href="{link}">{text}</a>'
-            task_name_new = str(hyperlink_format.format(link=task_link, text=str(t1["name"])))
-            notes_new = "<b>{}</b>".format(str(t1["notes_html"]))
-            status_new = "<b>{}</b>".format(str(status_dict[t1["status"]]))
-            section_name_new = "<b>{}</b>".format(str(section_id_dict[t1['section_id']]))
-            section_name_old = str(section_id_dict[t0['section_id']])
-            project_name = "<b>{}</b>".format(str(section_id_project_name_dict[t1['section_id']]))
-            due_date_new = "<b>{}</b>".format(str(formatted_date(t1["due"])))
-            if t1["assigned_to_id"] == None:
-                person_assigned = ""
-            else:
-                person_assigned = "(Currently assigned to: <b>{}</b> (@{}))".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
-
-            #Fall 1: Der Name wurde geändert
-            if key_which_has_changed == 'name':
-                message_name_changed = "The name of the task " + str(t0["name"]) + " was changed to " + task_name_new + " (section " + section_name_new + " at project " + project_name + ")"
-                bot_message_task_changed.append(message_name_changed)
-                bot_message_task_changed_dict[message_name_changed] = task_id_project_id_dict[t0["id"]]
-
-            #Fall 2: Die Notizen (notes) wurden geändert
-            if key_which_has_changed == 'notes_html':
-                message_notes_changed = "The notes of the task " + task_name_new + " have been changed to " + notes_new + " (section " + section_name_new + " at project " + project_name + ")"
-                bot_message_task_changed.append(message_notes_changed)
-                bot_message_task_changed_dict[message_notes_changed] = task_id_project_id_dict[t0["id"]]
-
-            #Fall 3: Der Status wurde geändert
-            if key_which_has_changed == 'status':
-                message_status_changed = "The status of the task " + task_name_new + " has been changed to " + status_new + " (section " + section_name_new + " at project " + project_name + ")"
-                bot_message_task_changed.append(message_status_changed)
-                bot_message_task_changed_dict[message_status_changed] = task_id_project_id_dict[t0["id"]]
-
-            #Fall 4: Das Fälligkeitsdatum (due) wurde geändert
-            if key_which_has_changed == 'due':
-                message_duedate_changed = "The due date of the task " + task_name_new + " has been changed to " + due_date_new + " (section " + section_name_new + " at project " + project_name + ")"
-                bot_message_task_changed.append(message_duedate_changed)
-                bot_message_task_changed_dict[message_duedate_changed] = task_id_project_id_dict[t0["id"]]
-
-            #Fall 5: Die zuständige Person (assigned_to_id) wurde geändert (Eine Task kann nur einer Person zugeordnet werden)
-            if key_which_has_changed == 'assigned_to_id':
-
-                if t1["assigned_to_id"] == None:
-                    person_assigned_new = "Nobody"
-                else:
-                    person_assigned_new = "<b>{}</b> (@{})".format(str(person_id_dict[t1["assigned_to_id"]]), str(telegram_usernames[person_id_dict[t1["assigned_to_id"]]]))
-                message_assigned_to_changed = "The task " + task_name_new + " is now assigned to " + person_assigned_new + " (section " + section_name_new + " at project " + project_name + ")"
-                bot_message_task_changed.append(message_assigned_to_changed)
-                bot_message_task_changed_dict[message_assigned_to_changed] = task_id_project_id_dict[t0["id"]]
-
-            #Fall 6: Die Task wurde in eine andere Section verschoben (section_id hat sich geändert)
-            if key_which_has_changed == 'section_id':
-                # message_section_changed = "The task {} has been moved to section {} from {} at project {}".format(task_name_new, section_name_new, section_name_old, project_name)
-                message_section_changed = "The task " + task_name_new + " has been moved to section " + section_name_new + " from " + section_name_old + " at project " + project_name
-                bot_message_task_changed.append(message_section_changed)
-                bot_message_task_changed_dict[message_section_changed] = task_id_project_id_dict[t0["id"]]
-
-
-
-###Einfachere Lösung für False UND NotImplemented möglich?
-
-
-
-
-
-
-
 
 
 ### BOT MESSAGES GENERIEREN (ABHÄNGIG VON PROJEKT)
@@ -345,7 +270,7 @@ for i in range(0, len(tasks0s)):
 
 URL = "https://api.telegram.org/bot{}/".format(token("telegram_token.txt"))
 
-# hier geklaut: https://www.codementor.io/garethdwyer/building-a-telegram-bot-using-python-part-1-goi5fncay
+# https://www.codementor.io/garethdwyer/building-a-telegram-bot-using-python-part-1-goi5fncay
 
 def get_url(url):
     response = requests.get(url)
