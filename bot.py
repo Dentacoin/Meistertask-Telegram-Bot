@@ -30,7 +30,7 @@ request_all_sections_pretty = json.dumps(request_all_sections, indent=4)
 request_all_tasks_pretty = json.dumps(request_all_tasks, indent=4)
 
 
-#DICTIONARIES OF PERSONS, PROJECTS, SECTIONS, TASKS
+#DICTIONARIES AND LISTS OF PERSONS, PROJECTS, SECTIONS, TASKS
 person_id_dict = {}
 for i in range(0, len(request_all_persons)):
     person_id_dict[request_all_persons[i]['id']] = str(request_all_persons[i]['firstname'] + " " + request_all_persons[i]['lastname'])
@@ -65,7 +65,7 @@ for i in range (0, len(request_all_tasks)):
 
 task_id_project_id_dict = {}
 for i in range(0, len(request_all_tasks)):
-    if request_all_tasks[i]['section_id'] in request_all_sections:
+    if request_all_tasks[i]['section_id'] in section_id_list:
         task_id_project_id_dict[request_all_tasks[i]['id']] = section_id_project_id_dict[request_all_tasks[i]['section_id']]
 
 
@@ -85,13 +85,13 @@ def formatted_date(Date_and_Time_unformatted):
 
 
 # ## activate to set up the bot for the first run
-# tasks0 = request_all_tasks
+tasks0 = request_all_tasks
 
 
 ## deactivate to set up the bot for the first run (tasks0 and tasks1 are gonna be equal, this means only changes after this point of time will be recognized by the bot)
 ## timestamp 0 (snapshot of all existing tasks one minute ago) -> load from json temp_snapshot.json
-with open("temp_snapshot.json", 'r') as json_file:
-   tasks0 = json.load(json_file)
+# with open("temp_snapshot.json", 'r') as json_file:
+#    tasks0 = json.load(json_file)
 
 
 # timestamp 1 -> current API-request
