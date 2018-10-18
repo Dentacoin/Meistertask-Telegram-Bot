@@ -65,7 +65,9 @@ for i in range (0, len(request_all_tasks)):
 
 task_id_project_id_dict = {}
 for i in range(0, len(request_all_tasks)):
-    task_id_project_id_dict[request_all_tasks[i]['id']] = section_id_project_id_dict[request_all_tasks[i]['section_id']]
+    if request_all_tasks[i]['section_id'] in request_all_sections:
+        task_id_project_id_dict[request_all_tasks[i]['id']] = section_id_project_id_dict[request_all_tasks[i]['section_id']]
+
 
 #ZEIT FORMATIERUNG
 def formatted_date(Date_and_Time_unformatted):
@@ -86,8 +88,8 @@ def formatted_date(Date_and_Time_unformatted):
 # tasks0 = request_all_tasks
 
 
-### deactivate to set up the bot for the first run (tasks0 and tasks1 are gonna be equal, this means only changes after this point of time will be recognized by the bot)
-# timestamp 0 (snapshot of all existing tasks one minute ago) -> load from json temp_snapshot.json
+## deactivate to set up the bot for the first run (tasks0 and tasks1 are gonna be equal, this means only changes after this point of time will be recognized by the bot)
+## timestamp 0 (snapshot of all existing tasks one minute ago) -> load from json temp_snapshot.json
 with open("temp_snapshot.json", 'r') as json_file:
    tasks0 = json.load(json_file)
 
