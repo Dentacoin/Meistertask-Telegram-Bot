@@ -85,13 +85,13 @@ def formatted_date(Date_and_Time_unformatted):
 
 
 # ## activate to set up the bot for the first run
-tasks0 = request_all_tasks
+# tasks0 = request_all_tasks
 
 
 ## deactivate to set up the bot for the first run (tasks0 and tasks1 are gonna be equal, this means only changes after this point of time will be recognized by the bot)
 ## timestamp 0 (snapshot of all existing tasks one minute ago) -> load from json temp_snapshot.json
-# with open("temp_snapshot.json", 'r') as json_file:
-#    tasks0 = json.load(json_file)
+with open("temp_snapshot.json", 'r') as json_file:
+   tasks0 = json.load(json_file)
 
 
 # timestamp 1 -> current API-request
