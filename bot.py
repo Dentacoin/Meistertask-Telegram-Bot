@@ -298,7 +298,7 @@ def get_last_chat_id_and_text(updates):
 
 def send_message(text, chat_id):
     text = urllib.parse.quote_plus(text)
-    url = URL + "sendMessage?text={}&chat_id={}&parse_mode={}".format(text, chat_id, "HTML")
+    url = URL + "sendMessage?text={}&chat_id={}&parse_mode={}&disable_web_page_preview={}".format(text, chat_id, "HTML", "True")
     get_url(url)
 
 
