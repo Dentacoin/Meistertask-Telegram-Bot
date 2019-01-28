@@ -19,7 +19,7 @@ headers = {"Authorization":"Bearer " + token("meistertask_token.txt")}
 #REQUESTS TO THE ENDPOINTS:
 request_all_persons = json.loads(requests.get("https://www.meistertask.com/api/persons",headers=headers).text)
 request_all_active_projects = json.loads(requests.get("https://www.meistertask.com/api/projects?status=active",headers=headers).text)
-request_all_sections = json.loads(requests.get("https://www.meistertask.com/api/sections?",headers=headers).text)
+request_all_sections = json.loads(requests.get("https://www.meistertask.com/api/sections?status=all",headers=headers).text)
 request_all_tasks = json.loads(requests.get("https://www.meistertask.com/api/tasks?",headers=headers).text)
 
 
