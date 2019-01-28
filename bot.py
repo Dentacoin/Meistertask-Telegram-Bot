@@ -204,7 +204,7 @@ for i in range(0, len(tasks0s)):
         task0 = tasks0s[i][task_keys[j]]
         task1 = tasks1s[i][task_keys[j]]
 
-        if task0.__eq__(task1) == NotImplemented or False:
+        if (task0.__eq__(task1) == False or task0.__eq__(task1) == NotImplemented):
 
             #VORBEREITUNG/VEREINFACHUNG:
             key_which_has_changed = task_keys[j]
